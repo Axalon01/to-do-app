@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToDoApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="400">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" /> <!-- Task list takes remaining space-->
+            <RowDefinition Height="Auto" /> <!--Buttons take only what they need-->
+        </Grid.RowDefinitions>
+        <ListBox x:Name="TaskList" Grid.Row="0" />
 
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Add Task" Margin="5"/>
+            <Button Content="Edit Task" Margin="5"/>
+            <Button Content="Delete Task" Margin="5"/>
+            <Button Content="Mark Complete" Margin="5"/>
+        </StackPanel>
     </Grid>
 </Window>
