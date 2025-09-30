@@ -44,11 +44,10 @@ namespace ToDoApp
 			};
 
 			// Save it via TaskManager
-			var manager = new TaskManager("tasks.json");
-			manager.AddTask(newTask);
+			_manager.AddTask(newTask);
 
 			// Refresh the listbox UI
-			TaskList.ItemsSource = manager.LoadTasks();
+			TaskList.ItemsSource = _manager.LoadTasks();
 
 			//Clear inputs after adding
 			TitleInput.Text = "";
