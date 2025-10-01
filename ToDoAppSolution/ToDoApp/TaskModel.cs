@@ -14,6 +14,7 @@ namespace ToDoApp
         public bool IsComplete { get; set; }
         public DateTime? DueDate { get; set; }
         public DateTime CreatedAt { get; set; }
+		public bool IsEditing { get; set; }
 
-    }
+	}
 }

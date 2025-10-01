@@ -13,19 +13,32 @@
             <RowDefinition Height="Auto" /> <!--Buttons take only what they need-->
         </Grid.RowDefinitions>
         <!--Row 0: Task list-->
-        <ListBox x:Name="TaskList" Grid.Row="0">
+        <ListBox x:Name="TaskList" Grid.Row="0" MouseDoubleClick="EditTask_Click">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Title}" FontWeight="Bold" />
+                        <CheckBox IsChecked="{Binding IsComplete, Mode=TwoWay}">
+                            <TextBlock Text="{Binding Title}" FontWeight="Bold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsComplete}" Value="True">
+                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </CheckBox>
                         <TextBlock Text="{Binding DueDate}" FontStyle="Italic" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!--Row 1: InlineInput area (starts hidden)-->
-        <StackPanel x:Name="InputPanel" Grid.Row="1" Orientation="Vertical" Margin="5">
+        <!--Row 1: Inline Input area (starts hidden)-->
+        <StackPanel x:Name="InputPanel" Grid.Row="1" Orientation="Vertical" Margin="5" Visibility="Collapsed">
             <Label Content="Title" VerticalAlignment="Center"/>
             <TextBox x:Name="TitleInput" Width="150" Margin="5" />
 
@@ -35,9 +48,12 @@
             <Label Content="Due Date:" VerticalAlignment="Center"/>
             <DatePicker x:Name="DueDateInput" Width="120" Margin="5"/>
 
-            <Button Content="Add" Margin="5" Click="AddTask_Click"/>
-
-            <Button Content="Cancel" Margin="5" Click="CancelAdd_Click"/>
+            <!-- Buttons specific to input/edit mode -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="AddButton" Content="Add" Margin="5" Click="AddTask_Click"/>
+                <Button x:Name="SaveButton" Content="Save" Margin="5" Click="SaveEdit_Click" Visibility="Collapsed"/>
+                <Button Content="Cancel" Margin="5" Click="CancelAdd_Click"/>
+            </StackPanel>
         </StackPanel>
 
         <!--Row 2: Action buttons-->
@@ -45,7 +61,6 @@
             <Button Content="Add Task" Margin="5" Click="ShowAddPanel_Click"/>
             <Button Content="Edit Task" Margin="5" Click="EditTask_Click"/>
             <Button Content="Delete Task" Margin="5" Click="DeleteTask_Click"/>
-            <Button Content="Mark Complete" Margin="5" Click="Mark_Complete_Click"/>
         </StackPanel>
     </Grid>
 </Window>
