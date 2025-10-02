@@ -31,7 +31,6 @@ namespace ToDoApp
 		{
 			InputPanel.Visibility = Visibility.Visible;
 			TitleInput.Focus();
-			//DueDateInput.SelectedDate = DateTime.Today;
 		}
 
 		private void AddTask_Click(object sender, RoutedEventArgs e)
