@@ -31,6 +31,10 @@ namespace ToDoApp
 		{
 			InputPanel.Visibility = Visibility.Visible;
 			TitleInput.Focus();
+
+			InputPanel.Visibility = Visibility.Visible;
+			ActionButtons.Visibility = Visibility.Collapsed; // Hide bottom buttons
+			TaskList.IsEnabled = false;
 		}
 
 		private void AddTask_Click(object sender, RoutedEventArgs e)
@@ -95,6 +99,11 @@ namespace ToDoApp
 			TitleInput.Text = "";
 			DescriptionInput.Text = "";
 			DueDateInput.SelectedDate = null;
+
+			TaskList.IsEnabled = true;
+
+			InputPanel.Visibility = Visibility.Collapsed;
+			ActionButtons.Visibility = Visibility.Visible; // Show bottom buttons again
 		}
 
 		private void EditTask_Click(object sender, RoutedEventArgs e)
@@ -141,8 +150,13 @@ namespace ToDoApp
 				AmPmInput.SelectedIndex = -1;
 			}
 
+			TaskList.IsEnabled = false;
+
 			AddButton.Visibility = Visibility.Collapsed;
 			SaveButton.Visibility = Visibility.Visible;
+
+			// Hide the bottom buttons when editing
+			ActionButtons.Visibility = Visibility.Collapsed;
 		}
 
 		private void SaveEdit_Click(object sender, RoutedEventArgs e)
@@ -197,6 +211,11 @@ namespace ToDoApp
 
 			//Clear _taskBeingEdited
 			_taskBeingEdited = null;
+
+			TaskList.IsEnabled = true;
+
+			InputPanel.Visibility = Visibility.Collapsed;
+			ActionButtons.Visibility = Visibility.Visible;
 		}
 
 		private void DeleteTask_Click(object sender, RoutedEventArgs e)

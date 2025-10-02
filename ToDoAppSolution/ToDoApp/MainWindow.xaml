@@ -7,21 +7,26 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="400">
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" /> <!-- Task list takes remaining space-->
-            <RowDefinition Height="Auto" /> <!--Input area--> 
-            <RowDefinition Height="Auto" /> <!--Buttons take only what they need-->
+            <RowDefinition Height="*" />
+            <!-- Task list takes remaining space-->
+            <RowDefinition Height="Auto" />
+            <!--Input area-->
+            <RowDefinition Height="Auto" />
+            <!--Buttons take only what they need-->
         </Grid.RowDefinitions>
+
         <!--Row 0: Task list-->
         <ListBox x:Name="TaskList" Grid.Row="0" MouseDoubleClick="EditTask_Click">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <!-- Row 1: Checkbox + Title -->
+                        <!-- Checkbox + Title -->
                         <StackPanel Orientation="Horizontal">
                             <CheckBox IsChecked="{Binding IsComplete, Mode=TwoWay}" 
-                  VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                      VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding Title}" FontWeight="Bold" VerticalAlignment="Center">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
@@ -36,72 +41,87 @@
                             </TextBlock>
                         </StackPanel>
 
-                        <!-- Row 2: Due Date -->
+                        <!-- Due Date -->
                         <TextBlock Text="{Binding DueDateDisplay}" FontStyle="Italic"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!--Row 1: Inline Input area (starts hidden)-->
+        <!--Row 1: Input panel (hidden by default)-->
         <StackPanel x:Name="InputPanel" Grid.Row="1" Orientation="Vertical" Margin="5" Visibility="Collapsed">
-            <Label Content="Title" VerticalAlignment="Center"/>
-            <TextBox x:Name="TitleInput" Width="150" Margin="5" />
+            <!-- Title & Description side by side with labels -->
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Label Content="Description" VerticalAlignment="Center"/>
-            <TextBox x:Name="DescriptionInput" Width="200" Margin="5"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="Title:" VerticalAlignment="Center" Margin="5"/>
+                <TextBox x:Name="TitleInput" Grid.Row="0" Grid.Column="1" Width="200" Margin="5"/>
 
-            <Label Content="Due Date:" VerticalAlignment="Center"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Description:" VerticalAlignment="Center" Margin="5"/>
+                <TextBox x:Name="DescriptionInput" Grid.Row="1" Grid.Column="1" Width="200" Margin="5"/>
+            </Grid>
 
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <!-- Date -->
-                <DatePicker x:Name="DueDateInput" Width="120" Margin="5"/>
+            <!-- Date & Time section -->
+            <StackPanel Orientation="Vertical" Margin="5">
+                <Label Content="Due Date &amp; Time:"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <!-- Date -->
+                    <DatePicker x:Name="DueDateInput" Width="120" Margin="5"/>
 
-                <!-- Hours -->
-                <ComboBox x:Name="HourInput" Width="50" Margin="5">
-                    <ComboBox.ItemsSource>
-                        <x:Array Type="{x:Type sys:Int32}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                            <sys:Int32>1</sys:Int32>
-                            <sys:Int32>2</sys:Int32>
-                            <sys:Int32>3</sys:Int32>
-                            <sys:Int32>4</sys:Int32>
-                            <sys:Int32>5</sys:Int32>
-                            <sys:Int32>6</sys:Int32>
-                            <sys:Int32>7</sys:Int32>
-                            <sys:Int32>8</sys:Int32>
-                            <sys:Int32>9</sys:Int32>
-                            <sys:Int32>10</sys:Int32>
-                            <sys:Int32>11</sys:Int32>
-                            <sys:Int32>12</sys:Int32>
-                        </x:Array>
-                    </ComboBox.ItemsSource>
-                </ComboBox>
+                    <!-- Hours -->
+                    <ComboBox x:Name="HourInput" Width="50" Margin="5">
+                        <ComboBox.ItemsSource>
+                            <x:Array Type="{x:Type sys:Int32}">
+                                <sys:Int32>1</sys:Int32>
+                                <sys:Int32>2</sys:Int32>
+                                <sys:Int32>3</sys:Int32>
+                                <sys:Int32>4</sys:Int32>
+                                <sys:Int32>5</sys:Int32>
+                                <sys:Int32>6</sys:Int32>
+                                <sys:Int32>7</sys:Int32>
+                                <sys:Int32>8</sys:Int32>
+                                <sys:Int32>9</sys:Int32>
+                                <sys:Int32>10</sys:Int32>
+                                <sys:Int32>11</sys:Int32>
+                                <sys:Int32>12</sys:Int32>
+                            </x:Array>
+                        </ComboBox.ItemsSource>
+                    </ComboBox>
 
-                <!-- Minutes -->
-                <ComboBox x:Name="MinuteInput" Width="50" Margin="5">
-                    <sys:String>00</sys:String>
-                    <sys:String>05</sys:String>
-                    <sys:String>10</sys:String>
-                    <sys:String>15</sys:String>
-                    <sys:String>20</sys:String>
-                    <sys:String>25</sys:String>
-                    <sys:String>30</sys:String>
-                    <sys:String>35</sys:String>
-                    <sys:String>40</sys:String>
-                    <sys:String>45</sys:String>
-                    <sys:String>50</sys:String>
-                    <sys:String>55</sys:String>
-                </ComboBox>
+                    <!-- Minutes -->
+                    <ComboBox x:Name="MinuteInput" Width="50" Margin="5">
+                        <sys:String>00</sys:String>
+                        <sys:String>05</sys:String>
+                        <sys:String>10</sys:String>
+                        <sys:String>15</sys:String>
+                        <sys:String>20</sys:String>
+                        <sys:String>25</sys:String>
+                        <sys:String>30</sys:String>
+                        <sys:String>35</sys:String>
+                        <sys:String>40</sys:String>
+                        <sys:String>45</sys:String>
+                        <sys:String>50</sys:String>
+                        <sys:String>55</sys:String>
+                    </ComboBox>
 
-                <!-- AM/PM -->
-                <ComboBox x:Name="AmPmInput" Width="60" Margin="5">
-                    <sys:String>AM</sys:String>
-                    <sys:String>PM</sys:String>
-                </ComboBox>
+                    <!-- AM/PM -->
+                    <ComboBox x:Name="AmPmInput" Width="60" Margin="5">
+                        <sys:String>AM</sys:String>
+                        <sys:String>PM</sys:String>
+                    </ComboBox>
+                </StackPanel>
+                <TextBlock Text="(Time optional)" FontSize="10" Foreground="Gray" Margin="5,0,0,0"/>
             </StackPanel>
 
-            <!-- Buttons specific to input/edit mode -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <!-- Buttons (centered) -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <Button x:Name="AddButton" Content="Add" Margin="5" Click="AddTask_Click"/>
                 <Button x:Name="SaveButton" Content="Save" Margin="5" Click="SaveEdit_Click" Visibility="Collapsed"/>
                 <Button Content="Cancel" Margin="5" Click="CancelAdd_Click"/>
@@ -109,7 +129,7 @@
         </StackPanel>
 
         <!--Row 2: Action buttons-->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel x:Name="ActionButtons" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Add Task" Margin="5" Click="ShowAddPanel_Click"/>
             <Button Content="Edit Task" Margin="5" Click="EditTask_Click"/>
             <Button Content="Delete Task" Margin="5" Click="DeleteTask_Click"/>
