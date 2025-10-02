@@ -14,7 +14,22 @@ namespace ToDoApp
         public bool IsComplete { get; set; }
         public DateTime? DueDate { get; set; }
         public DateTime CreatedAt { get; set; }
-		public bool IsEditing { get; set; }
+        public bool IsEditing { get; set; }
+        public string DueDateDisplay
+        {
+            get
+            {
+                if (DueDate == null) return "";
 
-	}
+                var dt = DueDate.Value;
+                // If time is midnight AND user didn't explicitly set time, just show the date
+                if (dt.Hour == 0 && dt.Minute == 0)
+                {
+                    return dt.ToString("MMM dd, yyyy");
+                }
+                return dt.ToString("MMM dd, yyyy h:mm tt");
+            }
+
+        }
+    }
 }

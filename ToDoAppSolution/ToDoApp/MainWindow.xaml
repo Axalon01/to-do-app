@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToDoApp"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="400">
     <Grid>
@@ -31,7 +32,9 @@
                                 </TextBlock.Style>
                             </TextBlock>
                         </CheckBox>
-                        <TextBlock Text="{Binding DueDate}" FontStyle="Italic" />
+                        <TextBlock FontStyle="Italic">
+                           <TextBlock Text="{Binding DueDateDisplay}" FontStyle="Italic"/>
+                        </TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -46,7 +49,53 @@
             <TextBox x:Name="DescriptionInput" Width="200" Margin="5"/>
 
             <Label Content="Due Date:" VerticalAlignment="Center"/>
-            <DatePicker x:Name="DueDateInput" Width="120" Margin="5"/>
+
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <!-- Date -->
+                <DatePicker x:Name="DueDateInput" Width="120" Margin="5"/>
+
+                <!-- Hours -->
+                <ComboBox x:Name="HourInput" Width="50" Margin="5">
+                    <ComboBox.ItemsSource>
+                        <x:Array Type="{x:Type sys:Int32}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                            <sys:Int32>1</sys:Int32>
+                            <sys:Int32>2</sys:Int32>
+                            <sys:Int32>3</sys:Int32>
+                            <sys:Int32>4</sys:Int32>
+                            <sys:Int32>5</sys:Int32>
+                            <sys:Int32>6</sys:Int32>
+                            <sys:Int32>7</sys:Int32>
+                            <sys:Int32>8</sys:Int32>
+                            <sys:Int32>9</sys:Int32>
+                            <sys:Int32>10</sys:Int32>
+                            <sys:Int32>11</sys:Int32>
+                            <sys:Int32>12</sys:Int32>
+                        </x:Array>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+                <!-- Minutes -->
+                <ComboBox x:Name="MinuteInput" Width="50" Margin="5">
+                    <sys:String>00</sys:String>
+                    <sys:String>05</sys:String>
+                    <sys:String>10</sys:String>
+                    <sys:String>15</sys:String>
+                    <sys:String>20</sys:String>
+                    <sys:String>25</sys:String>
+                    <sys:String>30</sys:String>
+                    <sys:String>35</sys:String>
+                    <sys:String>40</sys:String>
+                    <sys:String>45</sys:String>
+                    <sys:String>50</sys:String>
+                    <sys:String>55</sys:String>
+                </ComboBox>
+
+                <!-- AM/PM -->
+                <ComboBox x:Name="AmPmInput" Width="60" Margin="5">
+                    <sys:String>AM</sys:String>
+                    <sys:String>PM</sys:String>
+                </ComboBox>
+            </StackPanel>
 
             <!-- Buttons specific to input/edit mode -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

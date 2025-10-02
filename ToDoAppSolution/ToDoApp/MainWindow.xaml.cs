@@ -31,16 +31,45 @@ namespace ToDoApp
 		{
 			InputPanel.Visibility = Visibility.Visible;
 			TitleInput.Focus();
-			DueDateInput.SelectedDate = DateTime.Today;
+			//DueDateInput.SelectedDate = DateTime.Today;
 		}
 
 		private void AddTask_Click(object sender, RoutedEventArgs e)
 		{
+			// Build the full due date/tiem
+			DateTime? dueDateTime = null;
+
+			if (DueDateInput.SelectedDate.HasValue)
+			{
+				int hour = HourInput.SelectedItem is int h ? h : 0;
+				int minute = 0;
+				if (MinuteInput.SelectedItem is string minStr && int.TryParse(minStr, out var m))
+					minute = m;
+				string ampm = AmPmInput.SelectedItem as string ?? "AM";
+
+				if (ampm == "PM" && hour < 12)
+				{
+					hour += 12;
+				}
+				if (ampm == "AM" && hour == 12)
+				{
+					hour = 0;
+				}
+
+				dueDateTime = new DateTime(
+						DueDateInput.SelectedDate.Value.Year,
+						DueDateInput.SelectedDate.Value.Month,
+						DueDateInput.SelectedDate.Value.Day,
+						hour,
+						minute,
+						0);
+			}
+
 			var newTask = new TaskModel
 			{
 				Title = string.IsNullOrWhiteSpace(TitleInput.Text) ? "New Task" : TitleInput.Text,
 				Description = DescriptionInput.Text,
-				DueDate = DueDateInput.SelectedDate ?? DateTime.MinValue, // Fallback if no date is picked
+				DueDate = dueDateTime, // This will be null if nothing was selected
 				IsComplete = false,
 			};
 
@@ -54,6 +83,10 @@ namespace ToDoApp
 			TitleInput.Text = "";
 			DescriptionInput.Text = "";
 			DueDateInput.SelectedDate = null;
+			// -1 clears the dropdowns so the fields are empty again next time
+			HourInput.SelectedIndex = -1;
+			MinuteInput.SelectedIndex = -1;
+			AmPmInput.SelectedIndex = -1;
 		}
 
 		private void CancelAdd_Click(object sender, RoutedEventArgs e)
@@ -77,7 +110,37 @@ namespace ToDoApp
 
 			TitleInput.Text = task.Title;
 			DescriptionInput.Text = task.Description;
-			DueDateInput.SelectedDate = task.DueDate;
+
+			if (task.DueDate.HasValue)
+			{
+				var due = task.DueDate.Value;
+				DueDateInput.SelectedDate = due.Date;
+
+				int hour = due.Hour;
+				string ampm = "AM";
+
+				if (hour == 0)
+				{
+					hour = 12;
+				}
+				else if (hour >= 12)
+				{
+					ampm = "PM";
+					if (hour > 12) hour -= 12;
+				}
+
+				HourInput.SelectedItem = hour;
+				MinuteInput.SelectedItem = due.Minute.ToString("00"); // Match dropdown values like "05"
+
+				AmPmInput.SelectedItem = ampm;
+			}
+			else
+			{
+				DueDateInput.SelectedDate = null;
+				HourInput.SelectedIndex = -1;
+				MinuteInput.SelectedIndex = -1;
+				AmPmInput.SelectedIndex = -1;
+			}
 
 			AddButton.Visibility = Visibility.Collapsed;
 			SaveButton.Visibility = Visibility.Visible;
@@ -89,7 +152,36 @@ namespace ToDoApp
 
 			_taskBeingEdited.Title = TitleInput.Text;
 			_taskBeingEdited.Description = DescriptionInput.Text;
-			_taskBeingEdited.DueDate = DueDateInput.SelectedDate;
+		
+			DateTime? dueDateTime = null;
+
+			if (DueDateInput.SelectedDate.HasValue)
+			{
+				int hour = HourInput.SelectedItem is int h ? h : 0;
+				int minute = 0;
+				if (MinuteInput.SelectedItem is string minStr && int.TryParse(minStr, out var m))
+					minute = m;
+				string ampm = AmPmInput.SelectedItem as string ?? "AM";
+
+				if (ampm == "PM" && hour < 12)
+				{
+					hour += 12;
+				}
+				if (ampm == "AM" && hour == 12)
+				{
+					hour = 0;
+				}
+
+				dueDateTime = new DateTime(
+					DueDateInput.SelectedDate.Value.Year,
+					DueDateInput.SelectedDate.Value.Month,
+					DueDateInput.SelectedDate.Value.Day,
+					hour,
+					minute,
+					0);
+			}
+			
+			_taskBeingEdited.DueDate = dueDateTime;
 
 			_manager.UpdateTask(_taskBeingEdited);
 
@@ -100,6 +192,9 @@ namespace ToDoApp
 			TitleInput.Text = "";
 			DescriptionInput.Text = "";
 			DueDateInput.SelectedDate = null;
+			HourInput.SelectedIndex = -1;
+			MinuteInput.SelectedIndex = -1;
+			AmPmInput.SelectedIndex = -1;
 
 			//Clear _taskBeingEdited
 			_taskBeingEdited = null;
