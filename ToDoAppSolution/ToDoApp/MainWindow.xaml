@@ -6,7 +6,67 @@
         xmlns:local="clr-namespace:ToDoApp"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="400">
+        Title="To Do" Height="600" Width="400">
+
+    <Window.Resources>
+        <!-- Neutral colors -->
+        <SolidColorBrush x:Key="ButtonBackground" Color="White"/>
+        <SolidColorBrush x:Key="ButtonHoverBackground" Color="#F0F0F0"/>
+        <!-- Light gray on hover -->
+        <SolidColorBrush x:Key="ButtonBorder" Color="#CCCCCC"/>
+        <!-- Subtle gray border -->
+        <SolidColorBrush x:Key="ButtonForeground" Color="Black"/>
+
+        <!-- Clean button style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{StaticResource ButtonHoverBackground}"/>
+                            </Trigger>
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.5"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- ComboBox Style -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="6,3"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#666"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinWidth" Value="69"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+    </Window.Resources>
+
 
     <Grid>
         <Grid.RowDefinitions>
