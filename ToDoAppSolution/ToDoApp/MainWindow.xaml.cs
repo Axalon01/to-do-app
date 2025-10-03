@@ -35,6 +35,7 @@ namespace ToDoApp
 			InputPanel.Visibility = Visibility.Visible;
 			ActionButtons.Visibility = Visibility.Collapsed; // Hide bottom buttons
 			TaskList.IsEnabled = false;
+
 		}
 
 		private void AddTask_Click(object sender, RoutedEventArgs e)
@@ -90,6 +91,11 @@ namespace ToDoApp
 			HourInput.SelectedIndex = -1;
 			MinuteInput.SelectedIndex = -1;
 			AmPmInput.SelectedIndex = -1;
+
+			InputPanel.Visibility = Visibility.Collapsed;
+			ActionButtons.Visibility = Visibility.Visible; // Show bottom buttons again
+
+			TaskList.IsEnabled = true;
 		}
 
 		private void CancelAdd_Click(object sender, RoutedEventArgs e)
@@ -100,10 +106,10 @@ namespace ToDoApp
 			DescriptionInput.Text = "";
 			DueDateInput.SelectedDate = null;
 
-			TaskList.IsEnabled = true;
-
 			InputPanel.Visibility = Visibility.Collapsed;
 			ActionButtons.Visibility = Visibility.Visible; // Show bottom buttons again
+
+			TaskList.IsEnabled = true;
 		}
 
 		private void EditTask_Click(object sender, RoutedEventArgs e)
@@ -235,5 +241,42 @@ namespace ToDoApp
 				TaskList.ItemsSource = _manager.LoadTasks();
 			}
 		}
+
+	//	private void RefreshTaskList()
+	//	{
+	//		if (_manager == null) return; // Prevents it from running if it's not ready yet
+
+	//		var tasks = _manager.LoadTasks();
+
+	//		// Filtering
+	//		string filter = (FilterCombo.SelectedItem as ComboBoxItem)?.Content.ToString();
+	//		if (filter == "Complete")
+	//		{
+	//			tasks = tasks.Where(t => t.IsComplete).ToList();
+	//		}
+	//		else if (filter == "Incomplete")
+	//		{
+	//			tasks = tasks.Where(t => !t.IsComplete).ToList();
+	//		}
+
+	//		// Sorting
+	//		string sort = (SortCombo.SelectedItem as ComboBoxItem)?.Content.ToString();
+	//		if (sort == "Due Date")
+	//		{
+	//			tasks = tasks.OrderBy(t => t.DueDate ?? DateTime.MaxValue).ToList();
+	//		}
+	//		else if (sort == "Completion")
+	//		{
+	//			tasks = tasks.OrderBy(t => t.IsComplete).ToList();
+
+	//			TaskList.ItemsSource = tasks;
+	//		}
+	//	}
+
+	//	private void FilterChanged(object sender, EventArgs e)
+	//		=> RefreshTaskList();
+
+	//	private void SortChanged(object sender, EventArgs e)
+	//		=> RefreshTaskList();
 	}
 }
